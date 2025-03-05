@@ -3,23 +3,21 @@ import "./App.css";
 import { LC, NC, SC, UC } from "./data/passChar";
 
 function App() {
-  let [uppercase, setUppercase] = useState(false);
-  let [lowercase, setLowercase] = useState(false);
-  let [number, setNumber] = useState(false);
-  let [symbols, setSymbols] = useState(false);
-  let [passwordLen, setPasswordLen] = useState(10);
-  let [fPass, setFPass] = useState("");
+  const [uppercase, setUppercase] = useState(false);
+  const [lowercase, setLowercase] = useState(false);
+  const [number, setNumber] = useState(false);
+  const [symbols, setSymbols] = useState(false);
+  const [passwordLen, setPasswordLen] = useState(10);
+  const [fPass, setFPass] = useState("");
 
-  let creatPassword = () => {
+  const creatPassword = () => {
     let finalPass = "";
     let charSet = "";
-    // alert("Hello inam");
     if (uppercase || lowercase || number || symbols) {
       if (uppercase) charSet += UC;
       if (lowercase) charSet += LC;
       if (number) charSet += NC;
       if (symbols) charSet += SC;
-      // console.log(charSet);
       for (let i = 0; i < passwordLen; i++) {
         finalPass += charSet.charAt(Math.floor(Math.random() * charSet.length));
       }
@@ -29,7 +27,7 @@ function App() {
     }
   };
 
-  let copyPass = () => {
+  const copyPass = () => {
     navigator.clipboard.writeText(fPass);
   };
 
@@ -39,7 +37,8 @@ function App() {
         <h2>Password Generator</h2>
 
         <div className="PasswordBoxIn">
-          <input type="text" readOnly value={fPass} />{" "}
+          <input type="text" readOnly value={fPass} />
+
           <button onClick={copyPass}>Copy</button>
         </div>
 
@@ -50,7 +49,15 @@ function App() {
             max={20}
             min={8}
             value={passwordLen}
-            onChange={(event) => setPasswordLen(event.target.value)}
+            onChange={(event) => {
+              let value = Number(event.target.value);
+
+              // Ensure value stays within the allowed range
+              if (value > 20) value = 20;
+              if (value < 4) value = 4;
+
+              setPasswordLen(value);
+            }}
           />
         </div>
 
